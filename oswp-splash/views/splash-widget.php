@@ -9,6 +9,7 @@ $CONF_db_pass    = "password";     	     // password
 $CONF_db_database   = "opensimdatabasename"; // Name of BDD
 // Konfig Ende
 
+
 // Hier steht der Code der Funktion(en), die die eigentliche Funktionalität enthält
 
 //<!-- Datenbankabfrage Statistik -->

@@ -12,7 +12,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       oswp-splash
- * Plugin URI:        https://github.com/BigManzai/oswp-splash
+ * Plugin URI:        https://github.com/BigManzai/oswp
  * Description:       Splash Informationen über den OpenSimulator anzeigen.
  * Version:           1.0.0
  * Author:            Manfred Aabye
@@ -21,7 +21,7 @@
  * License:           GPL-2
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /lang
- * GitHub Plugin URI: https://github.com/BigManzai/oswp-splash
+ * GitHub Plugin URI: https://github.com/BigManzai/oswp
  */
  
  // Prevent direct file access
@@ -76,12 +76,12 @@ class oswp_splash extends WP_Widget {
 		);
 
 		// Register admin styles and scripts
-		add_action( 'admin_print_styles', array( $this, 'register_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_scripts' ) );
+		//add_action( 'admin_print_styles', array( $this, 'register_admin_styles' ) );
+		//add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_scripts' ) );
 
 		// Register site styles and scripts
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_widget_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_widget_scripts' ) );
+		//add_action( 'wp_enqueue_scripts', array( $this, 'register_widget_styles' ) );
+		//add_action( 'wp_enqueue_scripts', array( $this, 'register_widget_scripts' ) );
 
 		// Refreshing the widget's cached output with each new post
 		add_action( 'save_post',    array( $this, 'flush_widget_cache' ) );
@@ -248,4 +248,9 @@ class oswp_splash extends WP_Widget {
 } // end class
 
 // TODO: Remember to change 'oswp_splash' to match the class name definition
-add_action( 'widgets_init', create_function( '', 'register_widget("oswp_splash");' ) );
+//add_action( 'widgets_init', create_function( '', 'register_widget("oswp_splash");' ) );
+
+function oswp_splash_register_widget() {
+register_widget('oswp_splash');
+}
+add_action('widgets_init', 'oswp_splash_register_widget');
