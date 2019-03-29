@@ -1,46 +1,50 @@
-<!-- This file is used to markup the public-facing widget. -->
-
 <?php
-// Konfig Anfang
-/* MySQL Database */
-$CONF_db_server   = "localhost";		     //Your Database-Server
-$CONF_db_user  = "databaseuser";       	             // login
-$CONF_db_pass    = "password";     	     // password
-$CONF_db_database   = "opensimdatabasename"; // Name of BDD
-// Konfig Ende
-
-
-// Hier steht der Code der Funktion(en), die die eigentliche Funktionalität enthält
-
-//<!-- Datenbankabfrage Statistik -->
-
-
-//include("./includes/config.php");
-  
-$con = mysqli_connect($CONF_db_server,$CONF_db_user,$CONF_db_pass,$CONF_db_database);
+	global $wpdb;
+	// Fehler anzeigen
+	//$wpdb->show_errors();
+	
+	// Tabellenname erstellen
+	$tablename = $wpdb->prefix . "ossplash";
+	
+	// Auslesen der wp datenbank
+	$CONF_db_serveross = $wpdb->get_var( "SELECT CONF_db_server FROM $tablename" );
+	$CONF_db_useross = $wpdb->get_var( "SELECT CONF_db_user FROM $tablename" );
+	$CONF_db_passoss = $wpdb->get_var( "SELECT CONF_db_pass FROM $tablename" );
+	$CONF_db_databaseoss = $wpdb->get_var( "SELECT CONF_db_database FROM $tablename" );
+	$CONF_os_nameoss = $wpdb->get_var( "SELECT CONF_os_name FROM $tablename" );
+	  
+$con = mysqli_connect($CONF_db_serveross,$CONF_db_useross,$CONF_db_passoss,$CONF_db_databaseoss);
 
 // Query the database and get the count
 
-$result1 = mysqli_query($con,"SELECT COUNT(*) FROM Presence") or die("Error: " . mysqli_error($con));
-list($totalUsers) = mysqli_fetch_row($result1);
+$resultoss1 = mysqli_query($con,"SELECT COUNT(*) FROM Presence") or die("Error: " . mysqli_error($con));
+list($totalUsers) = mysqli_fetch_row($resultoss1);
 
-$result2 = mysqli_query($con,"SELECT COUNT(*) FROM regions") or die("Error: " . mysqli_error($con));
-list($totalRegions) = mysqli_fetch_row($result2);
+$resultoss2 = mysqli_query($con,"SELECT COUNT(*) FROM regions") or die("Error: " . mysqli_error($con));
+list($totalRegions) = mysqli_fetch_row($resultoss2);
 
-$result3 = mysqli_query($con,"SELECT COUNT(*) FROM UserAccounts") or die("Error: " . mysqli_error($con));
-list($totalAccounts) = mysqli_fetch_row($result3);
+$resultoss3 = mysqli_query($con,"SELECT COUNT(*) FROM UserAccounts") or die("Error: " . mysqli_error($con));
+list($totalAccounts) = mysqli_fetch_row($resultoss3);
 
-$result4 = mysqli_query($con,"SELECT COUNT(*) FROM GridUser WHERE Login > (UNIX_TIMESTAMP() - (30*86400))") or die("Error: " . mysqli_error($con));
-list($activeUsers) = mysqli_fetch_row($result4);
+$resultoss4 = mysqli_query($con,"SELECT COUNT(*) FROM GridUser WHERE Login > (UNIX_TIMESTAMP() - (30*86400))") or die("Error: " . mysqli_error($con));
+list($activeUsers) = mysqli_fetch_row($resultoss4);
+
+$resultoss5 = mysqli_query($con,"SELECT COUNT(*) FROM GridUser") or die("Error: " . mysqli_error($con));
+list($totalGridAccounts) = mysqli_fetch_row($resultoss5);
+
 
 // Display the results
-echo "<b><h2>Grid Status</h2>";
-echo "<div id='stats2'><b>Nutzer im Grid</font> : ". $totalUsers ."<br>";
-echo "Regionen</font> : ". $totalRegions ."<font #FFFFFF><br>";
-echo "Aktiv in den letzten 30 Tage</font> : ". $activeUsers ."<br>";
-echo "Nutzer</font> : ". $totalAccounts ."<br>";
-echo "<font color=#00AA00>Grid is ONLINE</font></b><br></div>";
-/* echo "<font color=#AA0000>Grid is OFFLINE</font></b>";<br></div> */
+echo "<h1>$CONF_os_nameoss</h1>";
+echo "Nutzer im Grid : ". $totalUsers ."<br>";
+echo "Regionen : ". $totalRegions ."<br>";
+echo "Aktiv in den letzten 30 Tage : ". $activeUsers ."<br>";
+echo "Hypergrid Nutzer : ". $totalGridAccounts ."<br>";
+echo "Registrationen : ". $totalAccounts ."<br>";
+echo "<h1><font color=#00AA00>Grid ist ONLINE</font></h1></b><br>";
+/* echo "<font color=#AA0000>Grid is OFFLINE</font></b>";<br> */
+
+	mysqli_close($con);
+	$wpdb->flush(); //Clearing the Cache
 ?>
 
 
